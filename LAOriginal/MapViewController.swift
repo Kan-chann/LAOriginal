@@ -60,16 +60,35 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
             let region = MKCoordinateRegion(center: currentLocation, latitudinalMeters: 500, longitudinalMeters: 500)
             testMapView.setRegion(region, animated: true)
             
+            let request = MKLocalSearch.Request()
+            request.naturalLanguageQuery = selectDetails[0]
+            request.region = testMapView.region
+            
+            let localSearch: MKLocalSearch = MKLocalSearch(request: request)
+            localSearch.start{ (response, error)in
+                
+                    if let error = error{
+                        print("検索エラー: \(error.localizedDescription)")
+                        return
+                    }
+                    guard let mapItems = response?.mapItems else { return }
+                    
+                    for placemark in mapItems {
+                        let annotation = MKPointAnnotation()
+                        annotation.coordinate = placemark.placemark.coordinate
+                        annotation.title = placemark.name // 店名をタイトルに設定
+                        self.testMapView.addAnnotation(annotation)
+                    }
+            }
+                }
             // 現在地にピンを立てる
 //            let annotation = MKPointAnnotation()
 //            annotation.coordinate = currentLocation
 //            annotation.title = "現在地"
 //            testMapView.addAnnotation(annotation)
-            
             // 位置情報の更新を停止
             manager.stopUpdatingLocation()
         }
-    }
     
     // 位置情報の取得に失敗したときに呼ばれる
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
