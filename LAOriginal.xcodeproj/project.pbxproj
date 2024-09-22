@@ -16,6 +16,9 @@
 		525A07372C9212CA005DD753 /* LAOriginalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525A07362C9212CA005DD753 /* LAOriginalTests.swift */; };
 		525A07412C9212CA005DD753 /* LAOriginalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525A07402C9212CA005DD753 /* LAOriginalUITests.swift */; };
 		525A07432C9212CA005DD753 /* LAOriginalUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525A07422C9212CA005DD753 /* LAOriginalUITestsLaunchTests.swift */; };
+		525A07502C97EC64005DD753 /* SelectKeyWordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525A074F2C97EC64005DD753 /* SelectKeyWordViewController.swift */; };
+		525A07532C980515005DD753 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525A07522C980515005DD753 /* MapKit.framework */; };
+		525A07552C980667005DD753 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525A07542C980667005DD753 /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		525A073C2C9212CA005DD753 /* LAOriginalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LAOriginalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		525A07402C9212CA005DD753 /* LAOriginalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAOriginalUITests.swift; sourceTree = "<group>"; };
 		525A07422C9212CA005DD753 /* LAOriginalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAOriginalUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		525A074F2C97EC64005DD753 /* SelectKeyWordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectKeyWordViewController.swift; sourceTree = "<group>"; };
+		525A07522C980515005DD753 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		525A07542C980667005DD753 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				525A07532C980515005DD753 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +90,7 @@
 				525A07352C9212CA005DD753 /* LAOriginalTests */,
 				525A073F2C9212CA005DD753 /* LAOriginalUITests */,
 				525A071D2C9212C9005DD753 /* Products */,
+				525A07512C980515005DD753 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -106,6 +114,8 @@
 				525A07282C9212CA005DD753 /* Assets.xcassets */,
 				525A072A2C9212CA005DD753 /* LaunchScreen.storyboard */,
 				525A072D2C9212CA005DD753 /* Info.plist */,
+				525A074F2C97EC64005DD753 /* SelectKeyWordViewController.swift */,
+				525A07542C980667005DD753 /* MapViewController.swift */,
 			);
 			path = LAOriginal;
 			sourceTree = "<group>";
@@ -125,6 +135,14 @@
 				525A07422C9212CA005DD753 /* LAOriginalUITestsLaunchTests.swift */,
 			);
 			path = LAOriginalUITests;
+			sourceTree = "<group>";
+		};
+		525A07512C980515005DD753 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				525A07522C980515005DD753 /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,8 +276,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				525A07502C97EC64005DD753 /* SelectKeyWordViewController.swift in Sources */,
 				525A07242C9212C9005DD753 /* ViewController.swift in Sources */,
 				525A07202C9212C9005DD753 /* AppDelegate.swift in Sources */,
+				525A07552C980667005DD753 /* MapViewController.swift in Sources */,
 				525A07222C9212C9005DD753 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,6 +462,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KYG4YTMYM7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LAOriginal/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -469,6 +490,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KYG4YTMYM7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LAOriginal/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
