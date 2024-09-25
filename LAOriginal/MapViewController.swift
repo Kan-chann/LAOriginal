@@ -8,10 +8,29 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager: CLLocationManager!
     
     var selectDetails: [String] = ["", "", ""]
+  
+    
+    // 店舗名、位置情報、距離を格納する配列
+    var storeNames: [String] = []
+    var storeCoordinates: [(latitude: CLLocationDegrees, longitude: CLLocationDegrees)] = []
+    var storeDistances: [Double] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Selected Details after transition: \(selectDetails)") // 確認用
+        
+        // selectDetails[2]をDoubleに変換して保持する
+        // selectDetails[2] をトリムして Double に変換
+        if let distanceStr = Double(selectDetails[2].trimmingCharacters(in: .whitespacesAndNewlines)) {
+            let maxDistance = distanceStr
+            print("変換後のmaxDistance: \(maxDistance)")
+        } else {
+            print("selectDetails[2] の値を Double に変換できません")
+        }
+        
+        
+        
+        print("Selected Details after transition: \(selectDetails)")
+
         
         // CLLocationManagerの初期化
         locationManager = CLLocationManager()
@@ -36,13 +55,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:
-            // 許可を求める
             manager.requestWhenInUseAuthorization()
         case .restricted, .denied:
-            // 許可がない場合、アクションを行わない
             break
         case .authorizedAlways, .authorizedWhenInUse:
-            // 許可された場合、位置情報の更新を開始
             manager.startUpdatingLocation()
         default:
             break
@@ -52,46 +68,69 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     // 位置情報が更新されたときに呼ばれる
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            // 現在地の座標を取得
             let currentLocation = location.coordinate
-           
             
             // マップの中心を現在地に設定
             let region = MKCoordinateRegion(center: currentLocation, latitudinalMeters: 500, longitudinalMeters: 500)
             testMapView.setRegion(region, animated: true)
             
+            // 検索リクエストの設定
             let request = MKLocalSearch.Request()
-            request.naturalLanguageQuery = selectDetails[0]
+            request.naturalLanguageQuery = selectDetails[0] // カテゴリ検索
             request.region = testMapView.region
             
             let localSearch: MKLocalSearch = MKLocalSearch(request: request)
-            localSearch.start{ (response, error)in
+            localSearch.start { (response, error) in
+                if let error = error {
+                    print("検索エラー: \(error.localizedDescription)")
+                    return
+                }
+                guard let mapItems = response?.mapItems else { return }
                 
-                    if let error = error{
-                        print("検索エラー: \(error.localizedDescription)")
-                        return
+                // selectDetails[2] を Double に変換
+                let maxDistance = Double(self.selectDetails[2]) ?? 0.0
+              
+                
+                for placemark in mapItems {
+                    // 店舗名と位置情報を配列に追加
+                    if let name = placemark.name {
+                        self.storeNames.append(name)
+                        self.storeCoordinates.append((latitude: placemark.placemark.coordinate.latitude, longitude: placemark.placemark.coordinate.longitude))
                     }
-                    guard let mapItems = response?.mapItems else { return }
                     
-                    for placemark in mapItems {
+                    // 現在地から店舗までの距離を計算
+                    let storeLocation = CLLocation(latitude: placemark.placemark.coordinate.latitude, longitude: placemark.placemark.coordinate.longitude)
+                    let distance = storeLocation.distance(from: CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude))
+                    self.storeDistances.append(distance)
+                    
+                    // デバッグ用に距離とselectDetails[2]の値を表示
+                    print("店舗名: \(placemark.name ?? "")")
+                    print("距離: \(distance) メートル")
+                    print("設定された距離条件: \(maxDistance) * 1000 = \(maxDistance * 1000)")
+                    
+                    // 距離がmaxDistance * 1000以内ならピンを立てる
+                    if distance <= maxDistance * 1000 {
                         let annotation = MKPointAnnotation()
                         annotation.coordinate = placemark.placemark.coordinate
-                        annotation.title = placemark.name // 店名をタイトルに設定
+                        annotation.title = placemark.name
                         self.testMapView.addAnnotation(annotation)
+                    } else {
+                        print("この店舗は条件外です")
                     }
-            }
                 }
-            // 現在地にピンを立てる
-//            let annotation = MKPointAnnotation()
-//            annotation.coordinate = currentLocation
-//            annotation.title = "現在地"
-//            testMapView.addAnnotation(annotation)
-            // 位置情報の更新を停止
+                
+                // 検索結果の配列を表示（デバッグ用）
+                print("検索にかかった店舗名の一覧: \(self.storeNames)")
+                print("各店舗の位置情報 (緯度・経度): \(self.storeCoordinates)")
+                print("各店舗までの距離 (メートル): \(self.storeDistances)")
+            }
+            
             manager.stopUpdatingLocation()
         }
+    }
     
-    // 位置情報の取得に失敗したときに呼ばれる
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("位置情報の取得に失敗しました: \(error.localizedDescription)")
     }
+    
 }
